@@ -1,0 +1,300 @@
+<japanese_teaching_examples>
+    <metadata>
+        <level>JLPT N5 (Beginner)</level>
+        <format_version>1.0</format_version>
+        <total_examples>20</total_examples>
+    </metadata>
+
+    <example id="1">
+        <student_input>I would like to learn how to say 'I drink water'</student_input>
+        <response>
+            <introduction>Let's look at this simple sentence!</introduction>
+            <vocabulary_table>
+                <entry>
+                    <japanese>わたし</japanese>
+                    <romaji>watashi</romaji>
+                    <english>I</english>
+                </entry>
+                <entry>
+                    <japanese>みず</japanese>
+                    <romaji>mizu</romaji>
+                    <english>water</english>
+                </entry>
+                <entry>
+                    <japanese>のみます</japanese>
+                    <romaji>nomimasu</romaji>
+                    <english>drink</english>
+                </entry>
+            </vocabulary_table>
+            <grammar_pattern>
+                <description>In Japanese, we follow Subject-Object-Verb order</description>
+                <pattern>[Subject]は + [Object]を + Verb</pattern>
+                <particles>
+                    <particle>は (wa) after subject</particle>
+                    <particle>を (wo) after object</particle>
+                </particles>
+            </grammar_pattern>
+            <hint>Try arranging these in Japanese order!</hint>
+        </response>
+    </example>
+
+    <example id="2">
+        <student_input>How do I say 'The library is quiet'</student_input>
+        <response>
+            <introduction>Let's break this down into parts!</introduction>
+            <vocabulary_table>
+                <entry>
+                    <japanese>としょかん</japanese>
+                    <romaji>toshokan</romaji>
+                    <english>library</english>
+                </entry>
+                <entry>
+                    <japanese>しずか</japanese>
+                    <romaji>shizuka</romaji>
+                    <english>quiet</english>
+                </entry>
+                <entry>
+                    <japanese>です</japanese>
+                    <romaji>desu</romaji>
+                    <english>is</english>
+                </entry>
+            </vocabulary_table>
+            <grammar_pattern>
+                <description>For describing places/things in Japanese</description>
+                <pattern>[Place]は + [Adjective] + です</pattern>
+                <particles>
+                    <particle>は (wa) marks the topic</particle>
+                </particles>
+            </grammar_pattern>
+            <hint>Can you put these together with は after 'library'?</hint>
+        </response>
+    </example>
+
+    <example id="3">
+        <student_input>I want to learn 'Today is Monday'</student_input>
+        <response>
+            <introduction>Here's the vocabulary for time expressions!</introduction>
+            <vocabulary_table>
+                <entry>
+                    <japanese>きょう</japanese>
+                    <romaji>kyou</romaji>
+                    <english>today</english>
+                </entry>
+                <entry>
+                    <japanese>げつようび</japanese>
+                    <romaji>getsuyoubi</romaji>
+                    <english>Monday</english>
+                </entry>
+                <entry>
+                    <japanese>です</japanese>
+                    <romaji>desu</romaji>
+                    <english>is</english>
+                </entry>
+            </vocabulary_table>
+            <grammar_pattern>
+                <description>Time expressions usually come first in Japanese</description>
+                <pattern>[Time]は + [Noun] + です</pattern>
+                <particles>
+                    <particle>は (wa) marks the topic</particle>
+                </particles>
+            </grammar_pattern>
+            <hint>Try putting these together with は after 'today'!</hint>
+        </response>
+    </example>
+
+    <example id="4">
+        <student_input>How do I say 'This is my book'</student_input>
+        <response>
+            <introduction>Let's look at possession in Japanese!</introduction>
+            <vocabulary_table>
+                <entry>
+                    <japanese>これ</japanese>
+                    <romaji>kore</romaji>
+                    <english>this</english>
+                </entry>
+                <entry>
+                    <japanese>わたし</japanese>
+                    <romaji>watashi</romaji>
+                    <english>my</english>
+                </entry>
+                <entry>
+                    <japanese>の</japanese>
+                    <romaji>no</romaji>
+                    <english>'s (possession)</english>
+                </entry>
+                <entry>
+                    <japanese>ほん</japanese>
+                    <romaji>hon</romaji>
+                    <english>book</english>
+                </entry>
+                <entry>
+                    <japanese>です</japanese>
+                    <romaji>desu</romaji>
+                    <english>is</english>
+                </entry>
+            </vocabulary_table>
+            <grammar_pattern>
+                <description>For showing possession, we use の (no)</description>
+                <pattern>これは + [Owner]の + [Item] + です</pattern>
+                <particles>
+                    <particle>は (wa) marks the topic</particle>
+                    <particle>の (no) shows possession</particle>
+                </particles>
+            </grammar_pattern>
+            <hint>Try connecting these pieces using the particles!</hint>
+        </response>
+    </example>
+
+    <example id="5">
+        <student_input>How do I say 'I study Japanese at school'</student_input>
+        <response>
+            <introduction>Let's learn about location and actions!</introduction>
+            <vocabulary_table>
+                <entry>
+                    <japanese>わたし</japanese>
+                    <romaji>watashi</romaji>
+                    <english>I</english>
+                </entry>
+                <entry>
+                    <japanese>にほんご</japanese>
+                    <romaji>nihongo</romaji>
+                    <english>Japanese (language)</english>
+                </entry>
+                <entry>
+                    <japanese>がっこう</japanese>
+                    <romaji>gakkou</romaji>
+                    <english>school</english>
+                </entry>
+                <entry>
+                    <japanese>べんきょうします</japanese>
+                    <romaji>benkyoushimasu</romaji>
+                    <english>study</english>
+                </entry>
+            </vocabulary_table>
+            <grammar_pattern>
+                <description>For actions at locations, we use で (de)</description>
+                <pattern>[Subject]は + [Object]を + [Place]で + Verb</pattern>
+                <particles>
+                    <particle>は (wa) marks the subject</particle>
+                    <particle>を (wo) marks the object</particle>
+                    <particle>で (de) marks location of action</particle>
+                </particles>
+            </grammar_pattern>
+            <hint>Try arranging these words with the correct particles!</hint>
+        </response>
+    </example>
+
+    <example id="6">
+        <student_input>I want to say 'The cat is black'</student_input>
+        <response>
+            <introduction>Let's practice describing things with colors!</introduction>
+            <vocabulary_table>
+                <entry>
+                    <japanese>ねこ</japanese>
+                    <romaji>neko</romaji>
+                    <english>cat</english>
+                </entry>
+                <entry>
+                    <japanese>くろい</japanese>
+                    <romaji>kuroi</romaji>
+                    <english>black</english>
+                </entry>
+                <entry>
+                    <japanese>です</japanese>
+                    <romaji>desu</romaji>
+                    <english>is</english>
+                </entry>
+            </vocabulary_table>
+            <grammar_pattern>
+                <description>For describing things with i-adjectives</description>
+                <pattern>[Subject]は + [i-adjective] + です</pattern>
+                <particles>
+                    <particle>は (wa) marks the subject</particle>
+                </particles>
+            </grammar_pattern>
+            <hint>Remember, くろい (kuroi) is an i-adjective, so it goes before です!</hint>
+        </response>
+    </example>
+
+    <example id="7">
+        <student_input>How do I say 'I go to the park on Sunday'</student_input>
+        <response>
+            <introduction>Let's practice time expressions and destinations!</introduction>
+            <vocabulary_table>
+                <entry>
+                    <japanese>わたし</japanese>
+                    <romaji>watashi</romaji>
+                    <english>I</english>
+                </entry>
+                <entry>
+                    <japanese>にちようび</japanese>
+                    <romaji>nichiyoubi</romaji>
+                    <english>Sunday</english>
+                </entry>
+                <entry>
+                    <japanese>こうえん</japanese>
+                    <romaji>kouen</romaji>
+                    <english>park</english>
+                </entry>
+                <entry>
+                    <japanese>いきます</japanese>
+                    <romaji>ikimasu</romaji>
+                    <english>go</english>
+                </entry>
+            </vocabulary_table>
+            <grammar_pattern>
+                <description>For expressing time and destination</description>
+                <pattern>[Subject]は + [Time]に + [Place]に + Verb</pattern>
+                <particles>
+                    <particle>は (wa) marks the subject</particle>
+                    <particle>に (ni) marks both time and destination</particle>
+                </particles>
+            </grammar_pattern>
+            <hint>Try putting these together using に for both time and destination!</hint>
+        </response>
+    </example>
+
+    <example id="8">
+        <student_input>I want to learn 'I like cats and dogs'</student_input>
+        <response>
+            <introduction>Let's learn how to connect nouns and express likes!</introduction>
+            <vocabulary_table>
+                <entry>
+                    <japanese>わたし</japanese>
+                    <romaji>watashi</romaji>
+                    <english>I</english>
+                </entry>
+                <entry>
+                    <japanese>ねこ</japanese>
+                    <romaji>neko</romaji>
+                    <english>cat</english>
+                </entry>
+                <entry>
+                    <japanese>いぬ</japanese>
+                    <romaji>inu</romaji>
+                    <english>dog</english>
+                </entry>
+                <entry>
+                    <japanese>と</japanese>
+                    <romaji>to</romaji>
+                    <english>and</english>
+                </entry>
+                <entry>
+                    <japanese>すき</japanese>
+                    <romaji>suki</romaji>
+                    <english>like</english>
+                </entry>
+            </vocabulary_table>
+            <grammar_pattern>
+                <description>For connecting nouns and expressing likes</description>
+                <pattern>[Subject]は + [Noun]と[Noun]が + すき です</pattern>
+                <particles>
+                    <particle>は (wa) marks the subject</particle>
+                    <particle>と (to) connects nouns</particle>
+                    <particle>が (ga) marks what is liked</particle>
+                </particles>
+            </grammar_pattern>
+            <hint>Connect the nouns with と, then use が before すき!</hint>
+        </response>
+    </example>
+</japanese_teaching_examples>
