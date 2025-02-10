@@ -155,7 +155,54 @@ def load(app):
     except Exception as e:
       return jsonify({"error": str(e)}), 500
 
-  # todo GET /groups/:id/words/raw
+  @app.route('/groups/<int:id>/words/raw', methods=['GET'])
+  @cross_origin()
+  def get_group_words_raw(id):
+    """Get raw word data for a specific group"""
+    try:
+      cursor = app.db.cursor()
+      
+      # Verify group exists
+      cursor.execute('SELECT name FROM groups WHERE id = ?', (id,))
+      group = cursor.fetchone()
+      if not group:
+        return jsonify({"error": "Group not found"}), 404
+
+      # Get all words for the group without pagination
+      cursor.execute('''
+        SELECT 
+            w.id,
+            w.kanji,
+            w.romaji,
+            w.english,
+            w.parts,
+            COALESCE(wr.correct_count, 0) as correct_count,
+            COALESCE(wr.wrong_count, 0) as wrong_count
+        FROM words w
+        JOIN word_groups wg ON w.id = wg.word_id
+        LEFT JOIN word_reviews wr ON w.id = wr.word_id
+        WHERE wg.group_id = ?
+        ORDER BY w.kanji
+      ''', (id,))
+      
+      words = cursor.fetchall()
+      
+      return jsonify({
+        'words': [{
+          'id': word['id'],
+          'kanji': word['kanji'],
+          'romaji': word['romaji'],
+          'english': word['english'],
+          'parts': json.loads(word['parts']),
+          'stats': {
+            'correct_count': word['correct_count'],
+            'wrong_count': word['wrong_count']
+          }
+        } for word in words]
+      })
+      
+    except Exception as e:
+      return jsonify({"error": str(e)}), 500
 
   @app.route('/groups/<int:id>/study_sessions', methods=['GET'])
   @cross_origin()
