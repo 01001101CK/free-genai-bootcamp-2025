@@ -1,0 +1,80 @@
+---
+description: rules for sqlite
+globs: /backend-flask/*
+---
+
+"""
+RULE 1: Always Use Parameterized Queries
+---------------------------------------
+Pseudocode:
+1. NEVER concatenate strings to build queries
+2. Use ? placeholders for parameters
+3. Pass parameters as tuple/list
+4. Handle parameters safely
+"""
+# GOOD ✅
+cursor.execute('SELECT * FROM users WHERE id = ?', (user_id,))
+
+# BAD ❌
+# cursor.execute(f"SELECT * FROM users WHERE id = {user_id}")  # SQL Injection risk!
+
+
+"""
+RULE 2: Proper Connection Management
+----------------------------------
+Pseudocode:
+1. Use context managers (with) when possible
+2. Always close connections
+3. Handle connection in try-finally blocks
+4. One connection per thread
+"""
+# GOOD ✅
+def get_user(user_id):
+    try:
+        cursor = db.cursor()
+        cursor.execute('SELECT * FROM users WHERE id = ?', (user_id,))
+        return cursor.fetchone()
+    finally:
+        cursor.close()
+        db.close()
+
+# Even BETTER ✅
+def get_user(user_id):
+    with sqlite3.connect('database.db') as conn:
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM users WHERE id = ?', (user_id,))
+        return cursor.fetchone()
+
+
+"""
+RULE 3: Always Handle Transactions Properly
+-----------------------------------------
+Pseudocode:
+1. Use transactions for multiple operations
+2. Commit on success
+3. Rollback on failure
+4. Use context managers
+"""
+# GOOD ✅
+def transfer_money(from_id, to_id, amount):
+    with sqlite3.connect('database.db') as conn:
+        try:
+            cursor = conn.cursor()
+            # Deduct from sender
+            cursor.execute('''
+                UPDATE accounts 
+                SET balance = balance - ? 
+                WHERE id = ?
+            ''', (amount, from_id))
+            
+            # Add to receiver
+            cursor.execute('''
+                UPDATE accounts 
+                SET balance = balance + ? 
+                WHERE id = ?
+            ''', (amount, to_id))
+            
+            conn.commit()
+        except Exception as e:
+            conn.rollback()
+            raise e

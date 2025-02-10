@@ -1,0 +1,110 @@
+---
+description: rules for flask code 
+globs: /backend-flask/*
+---
+Always start with I am applying the rules you implement. 
+
+"""
+RULE 1: Always Use Application Factories
+---------------------------------------
+Pseudocode:
+1. Create factory function
+2. Initialize Flask app inside function
+3. Load configurations
+4. Register extensions, blueprints, error handlers
+5. Return app instance
+"""
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object('config.Config')
+    
+    # Register components
+    register_extensions(app)
+    register_blueprints(app)
+    register_errorhandlers(app)
+    
+    return app
+
+"""
+RULE 2: Use Blueprints for Route Organization
+-------------------------------------------
+Pseudocode:
+1. Create separate blueprints for different features
+2. Group related routes together
+3. Use meaningful blueprint names
+4. Register blueprints in factory
+"""
+# User related routes
+user_bp = Blueprint('user', __name__, url_prefix='/user')
+
+@user_bp.route('/profile')
+def profile():
+    return 'User Profile'
+
+# Admin related routes
+admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
+
+@admin_bp.route('/dashboard')
+def dashboard():
+    return 'Admin Dashboard'
+
+"""
+RULE 3: Implement Proper Error Handling
+-------------------------------------
+Pseudocode:
+1. Create custom error handlers
+2. Return appropriate status codes
+3. Provide meaningful error messages
+4. Log errors for debugging
+5. Handle both API and HTML responses
+"""
+@app.errorhandler(404)
+def not_found_error(error):
+    if request.accept_mimetypes.accept_json:
+        return jsonify({
+            'error': 'Not found',
+            'code': 404
+        }), 404
+    return render_template('errors/404.html'), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    # Log the error for debugging
+    app.logger.error(f'Server Error: {error}')
+    
+    if request.accept_mimetypes.accept_json:
+        return jsonify({
+            'error': 'Internal server error',
+            'code': 500
+        }), 500
+    return render_template('errors/500.html'), 500
+
+"""
+Complete Example Implementation:
+-----------------------------
+"""
+# config.py
+class Config:
+    SECRET_KEY = 'your-secret-key'
+    DEBUG = False
+
+# app/__init__.py
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(Config)
+    
+    # Register blueprints
+    from .routes import user_bp, admin_bp
+    app.register_blueprint(user_bp)
+    app.register_blueprint(admin_bp)
+    
+    # Register error handlers
+    app.register_error_handler(404, not_found_error)
+    app.register_error_handler(500, internal_error)
+    
+    return app
+
+# Usage
+if __name__ == '__main__':
+    app = create_app()
+    app.run()

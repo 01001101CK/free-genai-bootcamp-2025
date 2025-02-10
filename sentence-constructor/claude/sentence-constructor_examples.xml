@@ -297,4 +297,63 @@
             <hint>Connect the nouns with と, then use が before すき!</hint>
         </response>
     </example>
+
+    <example>
+        <input>
+            <words>
+                <word>yesterday</word>
+                <word>park</word>
+                <word>walk</word>
+                <word>dog</word>
+            </words>
+        </input>
+        <output>
+            <sentence>Yesterday, I walked my dog in the park.</sentence>
+            <grammar>
+                - Time adverb (Yesterday) at the start, followed by comma
+                - Subject (I) + Past tense verb (walked)
+                - Object (my dog)
+                - Prepositional phrase (in the park) showing location
+            </grammar>
+            <alternatives>
+                - I took my dog for a walk in the park yesterday.
+                - My dog and I went for a walk in the park yesterday.
+            </alternatives>
+            <notes>
+                - "Take for a walk" is a common collocation for walking dogs
+                - "Go for a walk" is another natural expression
+                - The sentence can be more or less formal depending on context
+            </notes>
+        </output>
+    </example>
+    
+    <example>
+        <input>
+            <words>
+                <word>excited</word>
+                <word>new job</word>
+                <word>start</word>
+                <word>next week</word>
+            </words>
+        </input>
+        <output>
+            <sentence>I am excited to start my new job next week.</sentence>
+            <grammar>
+                - Subject (I) + Present tense BE verb (am)
+                - Adjective (excited)
+                - Infinitive phrase (to start)
+                - Object (my new job)
+                - Time expression (next week)
+            </grammar>
+            <alternatives>
+                - Next week, I will start my new job, and I'm very excited.
+                - Starting my new job next week has me excited.
+            </alternatives>
+            <notes>
+                - "Be excited to" expresses enthusiasm about future events
+                - The sentence structure shows cause and effect
+                - Formal enough for professional context
+            </notes>
+        </output>
+    </example>
 </japanese_teaching_examples>
