@@ -4,71 +4,47 @@ import json
 
 def load(app):
   # Endpoint: GET /words with pagination (50 words per page)
-  @app.route('/words', methods=['GET'])
+  @app.route('/groups/<int:id>/words/raw', methods=['GET'])
   @cross_origin()
-  def get_words():
+  def get_group_words_raw(id):
     try:
       cursor = app.db.cursor()
-
-      # Get the current page number from query parameters (default is 1)
-      page = int(request.args.get('page', 1))
-      # Ensure page number is positive
-      page = max(1, page)
-      words_per_page = 50
-      offset = (page - 1) * words_per_page
-
-      # Get sorting parameters from the query string
-      sort_by = request.args.get('sort_by', 'kanji')  # Default to sorting by 'kanji'
-      order = request.args.get('order', 'asc')  # Default to ascending order
-
-      # Validate sort_by and order
-      valid_columns = ['kanji', 'romaji', 'english', 'correct_count', 'wrong_count']
-      if sort_by not in valid_columns:
-        sort_by = 'kanji'
-      if order not in ['asc', 'desc']:
-        order = 'asc'
-
-      # Query to fetch words with sorting
-      cursor.execute(f'''
-        SELECT w.id, w.kanji, w.romaji, w.english, 
-            COALESCE(r.correct_count, 0) AS correct_count,
-            COALESCE(r.wrong_count, 0) AS wrong_count
-        FROM words w
-        LEFT JOIN word_reviews r ON w.id = r.word_id
-        ORDER BY {sort_by} {order}
-        LIMIT ? OFFSET ?
-      ''', (words_per_page, offset))
-
-      words = cursor.fetchall()
-
-      # Query the total number of words
-      cursor.execute('SELECT COUNT(*) FROM words')
-      total_words = cursor.fetchone()[0]
-      total_pages = (total_words + words_per_page - 1) // words_per_page
-
+      # First, check if the group exists
+      cursor.execute('SELECT name FROM groups WHERE id = ?', (id,))
+      group = cursor.fetchone()
+      if not group:
+        return jsonify({"error": "Group not found"}), 404
+      # SQL query to fetch words along with group information
+      cursor.execute('''
+        SELECT g.id as group_id, g.name as group_name, w.*
+        FROM groups g
+        JOIN word_groups wg ON g.id = wg.group_id
+        JOIN words w ON w.id = wg.word_id
+        WHERE g.id = ?;
+      ''', (id,))
+      
+      data = cursor.fetchall()
+      
       # Format the response
-      words_data = []
-      for word in words:
-        words_data.append({
-          "id": word["id"],
-          "kanji": word["kanji"],
-          "romaji": word["romaji"],
-          "english": word["english"],
-          "correct_count": word["correct_count"],
-          "wrong_count": word["wrong_count"]
-        })
-
-      return jsonify({
-        "words": words_data,
-        "total_pages": total_pages,
-        "current_page": page,
-        "total_words": total_words
-      })
-
+      result = {
+        "group_id": id,
+        "group_name": data[0]["group_name"] if data else group["name"],
+        "words": []
+      }
+      
+      for row in data:
+        word = {
+          "id": row["id"],
+          "kanji": row["kanji"],
+          "romaji": row["romaji"],
+          "english": row["english"],
+          "parts": json.loads(row["parts"])  # Deserialize 'parts' field
+        }
+        result["words"].append(word)
+      
+      return jsonify(result)
     except Exception as e:
       return jsonify({"error": str(e)}), 500
-    finally:
-      app.db.close()
 
   # Endpoint: GET /words/:id to get a single word with its details
   @app.route('/words/<int:word_id>', methods=['GET'])
