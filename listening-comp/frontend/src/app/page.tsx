@@ -1,90 +1,119 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import QuestionGenerator from '@/components/QuestionGenerator'
+import AudioPlayer from '@/components/AudioPlayer'
+import Sidebar from '@/components/Sidebar'
+import { Question, PracticeType, Topic } from '@/types'
 
-export default function ListeningComprehension() {
-  const [videoUrl, setVideoUrl] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [transcript, setTranscript] = useState<any>(null)
-  const [mounted, setMounted] = useState(false)
+export default function ListeningPractice() {
+  const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null)
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
+  const [feedback, setFeedback] = useState<any>(null)
+  const [audioFile, setAudioFile] = useState<string | null>(null)
+  const [practiceType, setPracticeType] = useState<PracticeType>('Dialogue Practice')
+  const [topic, setTopic] = useState<Topic>('Daily Conversation')
 
-  // Handle hydration mismatch
-  useEffect(() => {
-    setMounted(true)
-  }, [])
+  const topics = {
+    "Dialogue Practice": ["Daily Conversation", "Shopping", "Restaurant", "Travel", "School/Work"],
+    "Phrase Matching": ["Announcements", "Instructions", "Weather Reports", "News Updates"]
+  }
 
-  const handleVideoSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setError(null)
-    setTranscript(null)
-    
+  const handleGenerateQuestion = async () => {
     try {
-      console.log('Submitting URL:', videoUrl)
-      
-      const response = await fetch('/api/transcript', {
+      const response = await fetch('/api/questions/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ videoUrl })
+        body: JSON.stringify({ practiceType, topic })
       })
-
       const data = await response.json()
-      
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to process video')
-      }
-
-      console.log('Response data:', data)
-      setTranscript(data.transcript)
+      setCurrentQuestion(data)
+      setFeedback(null)
+      setSelectedAnswer(null)
+      setAudioFile(null)
     } catch (error) {
-      console.error('Error:', error)
-      setError(error instanceof Error ? error.message : 'An error occurred')
-    } finally {
-      setLoading(false)
+      console.error('Error generating question:', error)
     }
   }
 
-  // Don't render until client-side hydration is complete
-  if (!mounted) {
-    return null
+  const handleSubmitAnswer = async () => {
+    if (!selectedAnswer) return
+
+    try {
+      const response = await fetch('/api/questions/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          question: currentQuestion,
+          selectedAnswer
+        })
+      })
+      const data = await response.json()
+      setFeedback(data)
+    } catch (error) {
+      console.error('Error getting feedback:', error)
+    }
   }
 
   return (
-    <main className="min-h-screen p-4">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-2xl font-bold mb-4">Language Listening Comprehension</h1>
+    <div className="flex min-h-screen">
+      <Sidebar 
+        onQuestionSelect={(question) => {
+          setCurrentQuestion(question)
+          setFeedback(null)
+          setSelectedAnswer(null)
+        }}
+      />
+      
+      <main className="flex-1 p-8">
+        <h1 className="text-3xl font-bold mb-8">JLPT Listening Practice</h1>
         
-        <form onSubmit={handleVideoSubmit} className="mb-6">
-          <input
-            type="text"
-            value={videoUrl}
-            onChange={(e) => setVideoUrl(e.target.value)}
-            placeholder="Enter YouTube URL (e.g., https://www.youtube.com/watch?v=...)"
-            className="w-full p-2 border rounded"
-          />
-          <button 
-            type="submit"
-            disabled={loading}
-            className="mt-2 px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-400"
+        <div className="mb-6">
+          <select 
+            value={practiceType}
+            onChange={(e) => setPracticeType(e.target.value as PracticeType)}
+            className="mr-4 p-2 border rounded"
           >
-            {loading ? 'Processing...' : 'Generate Questions'}
-          </button>
-        </form>
+            <option value="Dialogue Practice">Dialogue Practice</option>
+            <option value="Phrase Matching">Phrase Matching</option>
+          </select>
 
-        {error && (
-          <div className="p-4 mb-4 bg-red-100 text-red-700 rounded">
-            Error: {error}
-          </div>
+          <select
+            value={topic}
+            onChange={(e) => setTopic(e.target.value as Topic)}
+            className="p-2 border rounded"
+          >
+            {topics[practiceType].map(t => (
+              <option key={t} value={t}>{t}</option>
+            ))}
+          </select>
+        </div>
+
+        <button
+          onClick={handleGenerateQuestion}
+          className="mb-8 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          Generate New Question
+        </button>
+
+        {currentQuestion && (
+          <QuestionGenerator
+            question={currentQuestion}
+            selectedAnswer={selectedAnswer}
+            setSelectedAnswer={setSelectedAnswer}
+            feedback={feedback}
+            onSubmit={handleSubmitAnswer}
+          />
         )}
 
-        {transcript && (
-          <div className="p-4 bg-green-100 rounded">
-            <h2 className="font-bold mb-2">Transcript:</h2>
-            <pre className="whitespace-pre-wrap">{JSON.stringify(transcript, null, 2)}</pre>
-          </div>
+        {currentQuestion && (
+          <AudioPlayer
+            questionId={currentQuestion.id}
+            audioFile={audioFile}
+            setAudioFile={setAudioFile}
+          />
         )}
-      </div>
-    </main>
+      </main>
+    </div>
   )
 } 
